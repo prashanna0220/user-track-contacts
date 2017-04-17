@@ -17,5 +17,8 @@ Route::get('/', function () {
 
 //AUTH
 Auth::routes();
-Route::get('/home', 'HomeController@index');
+Route::get('home', 'HomeController@index');
 
+Route::get('contact/{id}', 'AddressController@create');
+Route::post('contact', 'AddressController@store');
+Route::get('delete/{id}','AddressController@destroy');

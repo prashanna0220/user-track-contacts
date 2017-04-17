@@ -19,7 +19,7 @@ class CreateContactTable extends Migration
             $table->string('email')->unique();
             $table->string('phone')->unique();
             $table->string('address');
-            $table->string('Company');
+            $table->string('company');
             $table->date('dob')->nullable();
             $table->timestamps();
         });

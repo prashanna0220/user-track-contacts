@@ -6,13 +6,12 @@
             <div class="panel panel-default">
                 <div class="panel-heading">Address Book</div>
                 <div class="panel-body" style="overflow:auto; ">
-                <h1 class="text-right">
+                <h1 class="text-right" style="margin: 0px 0px 10px;">
                 <a href="#myModal" role="button" class="btn btn-primary btn-sm" data-toggle="modal">Add Contact</a>
                 </h1>
                     <table class="table table-bordered">
                         <thead>
                           <tr>
-                            <th>S.No</th>
                             <th>Name</th>
                             <th>Email</th>
                             <th>Phone</th>
@@ -24,24 +23,25 @@
                           </tr>
                         </thead>
                         <tbody>
+                        @foreach($Usercontact as $Contact)
                           <tr>
-                            <td>1</td>
-                            <td>Doe</td>
-                            <td>john@example.com</td>
-                            <td>John</td>
-                            <td>Doe</td>
-                            <td>john@example.com</td>
-                            <td>John</td>
-                            <td>
+                            <td>{{ $Contact->name }}</td>
+                            <td>{{ $Contact->email }}</td>
+                            <td>{{ $Contact->phone }}</td>
+                            <td>{{ $Contact->address }}</td>
+                            <td>{{ $Contact->company }}</td>
+                            <td>{{ $Contact->dob }}</td>
+                            <td class="text-center">
                             <button class="btn btn-primary btn-xs">
-                            <a href=""><span class="glyphicon glyphicon-pencil"></span></a>
+                            <a class="edit-delete" href="edit/{{ $Contact->id }}"><span class="glyphicon glyphicon-pencil"></span></a>
                             </button>
                             </td>
-                            <td>
+                            <td class="text-center">
                             <button class="btn btn-danger btn-xs">
-                            <a href=""><span class="glyphicon glyphicon-trash"></span></a>
+                            <a class="edit-delete"  href="delete/{{ $Contact->id }}"><span class="glyphicon glyphicon-trash"></span></a>
                             </button>
                             </td>
+                            @endforeach
                         </tbody>
                     </table>
                 </div>
@@ -59,7 +59,8 @@
                 <h3 id="myModalLabel">Add Contact</h3>
             </div>
             <div class="modal-body">
-                <form class="form-horizontal col-sm-12">
+                <form class="form-horizontal col-sm-12" method="post" action="{{ url('contact') }}">
+                <input name="_token" type="hidden" value="{{ csrf_token() }}">
                     <div class="form-group">
                         <input class="form-control email" type="text" name="name" placeholder="Your Name">
                     </div>
