@@ -3,6 +3,22 @@
 <div class="container">
     <div class="row">
         <div class="col-lg-12">
+            @if (count($errors))
+            <div class="alert alert-danger">
+            <ul>
+                @foreach($errors->all() as $error)
+                <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+            </div>
+            @endif
+
+            @if(Session::has('message'))
+            <div class="alert alert-success alert-dismissable">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
+            {{ Session::get('message') }}
+            </div>
+            @endif
             <div class="panel panel-default">
                 <div class="panel-heading">Address Book</div>
                 <div class="panel-body" style="overflow:auto; ">
@@ -33,7 +49,7 @@
                             <td>{{ $Contact->dob }}</td>
                             <td class="text-center">
                             <button class="btn btn-primary btn-xs">
-                            <a class="edit-delete" href="edit/{{ $Contact->id }}"><span class="glyphicon glyphicon-pencil"></span></a>
+                            <a class="edit-delete" href="{{ url('show_data/'.$Contact->id) }}"><span class="glyphicon glyphicon-pencil"></span></a>
                             </button>
                             </td>
                             <td class="text-center">
@@ -77,7 +93,7 @@
                         <input class="form-control" name="company" placeholder="Organization/Company" type="text">
                     </div>
                     <div class="form-group">
-                        <input class="form-control" name="dob" placeholder="Birthday" type="text">
+                        <input class="form-control" name="dob" id="datepicker" placeholder="Birthday" type="text">
                     </div>
                     <div class="form-group">
                         <button type="submit" class="btn btn-success pull-left">Submit</button>

@@ -12,5 +12,6 @@ class Address extends Model
      * @var string
      */
     protected $table ='contact';
+    
 	protected $fillable = ['name', 'email', 'phone', 'address', 'company', 'dob'];
 }

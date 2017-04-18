@@ -13,11 +13,12 @@
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 
     <!-- Scripts -->
     <script>
         window.Laravel = {!! json_encode([
-            'csrfToken' => csrf_token(),
+        'csrfToken' => csrf_token(),
         ]) !!};
     </script>
 </head>
@@ -84,5 +85,12 @@
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}"></script>
+    <script src="{{ asset('js/jquery-1.12.4.js') }}"></script>
+    <script src="{{ asset('js/jquery-ui.js') }}"></script>
+    <script>
+    $( function() {
+     $( "#datepicker" ).datepicker();
+    } );
+    </script>
 </body>
 </html>

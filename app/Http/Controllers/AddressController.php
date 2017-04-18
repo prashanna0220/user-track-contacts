@@ -3,9 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Address;
-
-use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
+use Faker\Provider\DateTime;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Paginator;
+use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Support\Facades\Input;
+use App\Http\Controllers\Controller;
 
 class AddressController extends Controller
 {
@@ -35,9 +40,13 @@ class AddressController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
-        $contact = new Address();
+    {   
+        $this->validate($request,[
+        'email' => 'required|email|unique:contact',
+        'phone' => 'required|min:11|numeric|unique:contact'
+        ]);
 
+        $contact = new Address();
         $contact->name = $request->name;
         $contact->email = $request->email;
         $contact->phone = $request->phone;
@@ -45,10 +54,8 @@ class AddressController extends Controller
         $contact->company = $request->company;
         $contact->dob = $request->dob;
         $contact->save();
-        return redirect('home');
-
+        return redirect('home')->with('message','Your Contact Create Successfull !');
     }
-
     /**
      * Display the specified resource.
      *
@@ -68,9 +75,13 @@ class AddressController extends Controller
      */
     public function edit($id)
     {
-        //
-    }
+        $Address = Address::findOrFail($id);
 
+        if(!$Address){
+          abort(404);
+        }
+        return view('page.edit')->with('Address',$Address);
+    }
     /**
      * Update the specified resource in storage.
      *
@@ -80,9 +91,20 @@ class AddressController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+    
+        $contactUp= Address::findOrFail($id);
+        DB::table('contact')
+        ->where('id', $id)
+        ->update(['name' =>$request['name'],
+        'email'=>$request['email'],
+        'phone'=>$request['phone'],
+        'address'=>$request['address'],
+        'company'=>$request['company'],
+        'dob'=>$request['dob']
+        ]);
+        $contactUp->save();
+        return redirect('home')->with('message','Your Data Hasbeen Update!');
     }
-
     /**
      * Remove the specified resource from storage.
      *
@@ -93,6 +115,6 @@ class AddressController extends Controller
     {
         $contact = Address::find($id);
         $contact->delete();
-        return redirect('home');
+        return redirect('home')->with('message','Your Data Hasbeen Delete!');
     }
 }
