@@ -25,7 +25,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $Usercontact = Address::all();
-        return view('home')->with('Usercontact',$Usercontact);
+        // $Usercontact = Address::all();
+        // return view('home')->with('Usercontact',$Usercontact);
     }
 }

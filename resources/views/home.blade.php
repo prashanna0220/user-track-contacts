@@ -22,6 +22,16 @@
             <div class="panel panel-default">
                 <div class="panel-heading">Address Book</div>
                 <div class="panel-body" style="overflow:auto; ">
+                <form method="GET" action="{{ url('search') }}" class="navbar-form navbar-left" style="padding: 0px;">
+                    <div class="input-group custom-search-form">
+                        <input type="text" name="search" class="form-control" placeholder="Search ....">
+                        <span class="input-group-btn">
+                        <button type="submit" class="btn btn-default-sm">
+                         <i class="glyphicon glyphicon-search"></i>
+                        </button>
+                        </span>
+                    </div>
+                </form>
                 <h1 class="text-right" style="margin: 0px 0px 10px;">
                 <a href="#myModal" role="button" class="btn btn-primary btn-sm" data-toggle="modal">Add Contact</a>
                 </h1>
@@ -60,6 +70,7 @@
                             @endforeach
                         </tbody>
                     </table>
+                    {{ $Usercontact->links() }}
                 </div>
             </div>
         </div>

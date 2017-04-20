@@ -6,7 +6,6 @@ use App\Address;
 use Illuminate\Support\Facades\DB;
 use Faker\Provider\DateTime;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Paginator;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Support\Facades\Input;
@@ -19,11 +18,25 @@ class AddressController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-      //
-    }
+        if($request->input('search')){
 
+            $search = $request->get('search');
+            $Usercontact = Address::where('name','LIKE','%'.$search.'%')
+            ->orWhere("email", "LIKE", "%$search%")
+            ->orWhere("phone", "LIKE", "%$search%")
+            ->orWhere("address", "LIKE", "%$search%")
+            ->orWhere("company", "LIKE", "%$search%")
+            ->orWhere("dob", "LIKE", "%$search%")->paginate(6);
+            return view('home')->with('Usercontact',$Usercontact);
+
+         }else{
+
+            $Usercontact = Address::orderBy('created_at', 'desc')->paginate(6); 
+            return view('home')->with('Usercontact',$Usercontact); 
+        }  
+    }
     /**
      * Show the form for creating a new resource.
      *
@@ -62,9 +75,20 @@ class AddressController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function getSearch(Request $request)
     {
-        //
+
+        $search = $request->input('search');
+
+        $blogs = Address::where('name','LIKE','%'.$search.'%')
+        ->orWhere("email", "LIKE", "%$search%")
+        ->orWhere("phone", "LIKE", "%$search%")
+        ->orWhere("address", "LIKE", "%$search%")
+        ->orWhere("company", "LIKE", "%$search%")
+        ->orWhere("dob", "LIKE", "%$search%")
+        ->orderBy('id')->paginate(6);
+        return redirect('home');
+
     }
 
     /**

@@ -19,6 +19,8 @@ Auth::routes();
 Route::get('home', 'HomeController@index');
 
 //CONTACT USER ADD
+Route::get('home', 'AddressController@index');
+Route::get('search','AddressController@index');
 Route::get('contact/{id}', 'AddressController@create');
 Route::post('contact', 'AddressController@store');
 Route::get('show_data/{id}', 'AddressController@edit');
