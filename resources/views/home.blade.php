@@ -33,6 +33,7 @@
                     </div>
                 </form>
                 <h1 class="text-right" style="margin: 0px 0px 10px;">
+                <a href="exportVcard" role="button" class="btn btn-default btn-xs" >Vcard</a>
                 <a href="#myModal" role="button" class="btn btn-primary btn-sm" data-toggle="modal">Add Contact</a>
                 </h1>
                     <table class="table table-bordered">

@@ -26,3 +26,4 @@ Route::post('contact', 'AddressController@store');
 Route::get('show_data/{id}', 'AddressController@edit');
 Route::post('edit/{id}', 'AddressController@update');
 Route::get('delete/{id}','AddressController@destroy');
+Route::get('/exportVcard','AddressController@createVcard');

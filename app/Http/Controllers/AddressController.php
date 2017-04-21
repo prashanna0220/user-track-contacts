@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Address;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Faker\Provider\DateTime;
 use Illuminate\Http\Request;
+use JeroenDesloovere\VCard\VCard;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Support\Facades\Input;
@@ -20,8 +22,9 @@ class AddressController extends Controller
      */
     public function index(Request $request)
     {
-        if($request->input('search')){
 
+        $userId = Auth::id();         
+        if($request->input('search')){
             $search = $request->get('search');
             $Usercontact = Address::where('name','LIKE','%'.$search.'%')
             ->orWhere("email", "LIKE", "%$search%")
@@ -30,22 +33,31 @@ class AddressController extends Controller
             ->orWhere("company", "LIKE", "%$search%")
             ->orWhere("dob", "LIKE", "%$search%")->paginate(6);
             return view('home')->with('Usercontact',$Usercontact);
-
-         }else{
-
-            $Usercontact = Address::orderBy('created_at', 'desc')->paginate(6); 
+        }else{
+            $Usercontact = Address::where('user_id',$userId)->orderBy('created_at', 'desc')->paginate(6); 
             return view('home')->with('Usercontact',$Usercontact); 
-        }  
+        } 
     }
     /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function createVcard()
     {
-       echo "hello";
+        $UserContact = Address::orderBy('created_at', 'DESC')->get();
+        $vcard = new VCard();
+        foreach ($UserContact as $User) {
+            $vcard->addName($User->name);
+            $vcard->addEmail($User->email);
+            $vcard->addPhoneNumber($User->phone);
+            $vcard->addAddress($User->address);
+            $vcard->addCompany($User->company); 
+            $vcard->addBirthday($User->dob); 
+         return $vcard->download();
+        }
     }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -58,8 +70,9 @@ class AddressController extends Controller
         'email' => 'required|email|unique:contact',
         'phone' => 'required|min:11|numeric|unique:contact'
         ]);
-
+        $userId = Auth::id();
         $contact = new Address();
+        $contact->user_id = $userId;
         $contact->name = $request->name;
         $contact->email = $request->email;
         $contact->phone = $request->phone;
@@ -90,7 +103,6 @@ class AddressController extends Controller
         return redirect('home');
 
     }
-
     /**
      * Show the form for editing the specified resource.
      *
